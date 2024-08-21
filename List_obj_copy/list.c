@@ -1,15 +1,13 @@
 #include "list.h"
-#include <stdio.h>
-#include <string.h>
 
 int list_is_empty(list_t * list){
     return !list->n_elements;
 }
 
-list_t * list_init(){
-    list_t * list=malloc(sizeof(*list));
-    list->head=list->tail=NULL;
-    list->n_elements=0;
+list_t list_init(){
+    list_t list;
+    list.head=list.tail=NULL;
+    list.n_elements=0;
     return list;
 }
 
@@ -20,6 +18,11 @@ node_t * node_init(void*item, size_t item_size){
     node->prev=node->next=NULL;
     memcpy(node->item, item, item_size);
     return node;
+}
+
+void node_free(node_t* node){
+    free(node->item);
+    free(node);
 }
 
 void list_ins_tail(list_t * list, void* item, size_t item_size){
@@ -73,4 +76,37 @@ void list_free_R(node_t * head){
 void list_free(list_t * list){
     list_free_R(list->head);
     free(list);
+}
+
+int list_remove(list_t * list, int (* item_cmp)(void*, void*), void * key){
+    node_t* node=list->head, *to_del=NULL;
+    int found=1;
+    while(node!=NULL){
+        if(!item_cmp(node->item, key)){
+            found = 1;
+            if(node==list->head){
+                list->head=list->head->next;
+                if(list->head!=NULL)list->head->prev=NULL;
+                to_del=node;
+                node=node->next;
+            }
+            else if(node==list->tail){
+                list->tail=list->tail->prev;
+                if(list->tail!=NULL)
+                list->tail->next=NULL;
+                to_del=node;
+                node=node->next;
+            }
+            else{
+                node->prev->next= node->next;
+                node->next->prev=node->prev;
+                to_del=node;
+                node=node->next;    
+            }
+            list->n_elements--;
+            node_free(to_del);
+        }
+        else node=node->next;
+    }
+    return found;
 }

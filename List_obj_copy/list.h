@@ -2,6 +2,8 @@
 #define LIST_H
 
 #include <stddef.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 typedef struct node_s{
@@ -17,7 +19,7 @@ typedef struct list_s{
     unsigned int n_elements;
 }list_t;
 
-list_t * list_init();
+list_t list_init();
 
 void list_ins_tail(list_t * list, void* item, size_t item_size);
 
@@ -33,5 +35,7 @@ node_t * node_init(void * item, size_t item_size);
 #define LIST_INS_HEAD(LIST, ITEM) list_ins_head(LIST, &ITEM, sizeof(ITEM))
 
 void list_free(list_t * list);
+
+int list_remove(list_t * list, int (* item_cmp)(void*, void*), void * key);
 
 #endif
