@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+#include "alloc-leak-finder/leakfinder.h"
 
 typedef struct node_s{
     struct node_s *prev;

@@ -1,0 +1,6 @@
+[submodule "List_obj_copy/Data-Structures"]
+	path = List_obj_copy/Data-Structures
+	url = https://github.com/EmaB4r/Data-Structures
+[submodule "List_obj_copy/alloc-leak-finder"]
+	path = List_obj_copy/alloc-leak-finder
+	url = https://github.com/EmaB4r/alloc-leak-finder
